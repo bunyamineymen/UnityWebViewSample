@@ -96,8 +96,6 @@ public class WebViewManager : MonoBehaviour
                 {
                     Debug.LogFormat("Fail to open WebView. Error:{0}", error);
 
-                    ImgBackground.color = badkgroundColorYemek;
-
                 }
                 break;
             case GpmWebViewCallback.CallbackType.Close:
@@ -167,7 +165,7 @@ public class WebViewManager : MonoBehaviour
             isClearCookie = true,
             backgroundColor = "#FF2B85",
             title = "     ",
-            navigationBarColor = "#EB4384",
+            navigationBarColor = "#434548",
             isNavigationBarVisible = true,
             isBackButtonVisible = false,
             isForwardButtonVisible = false,

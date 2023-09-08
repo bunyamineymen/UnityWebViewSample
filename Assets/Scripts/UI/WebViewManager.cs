@@ -1,9 +1,6 @@
 ﻿using Gpm.WebView;
-
-using Ratic_Kit.Scripts;
-
 using System.Collections.Generic;
-
+using Ratic_Kit.Scripts;
 using UnityEngine;
 
 
@@ -40,18 +37,16 @@ public class WebViewManager : MonoBehaviour
     #endregion
 
 
-
-
-    public void OpenWebViewYemeksepeti()
-    {
-        GpmWebView.ShowUrl("https://ratic.co/yemeksepeti", GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
+    public void OpenWebViewViaUrlYemeksepeti()
+    { 
+        _webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
     }
 
     public void OpenWebView(string url)
     {
         if (string.IsNullOrEmpty(url) == false)
         {
-            _closeGO.SetActive(true);
+            //_closeGO.SetActive(true);
             // GpmWebView.ShowUrl(url, GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
             _webViewHandler.OpenWebViewViaUrl(url);
         }
@@ -132,15 +127,15 @@ public class WebViewManager : MonoBehaviour
 
         return new GpmWebViewRequest.Configuration()
         {
-            style = GpmWebViewStyle.FULLSCREEN,
+            style = GpmWebViewStyle.POPUP,
             isClearCache = true,
             isClearCookie = true,
-            backgroundColor = "#716e7d",
+            backgroundColor = "#FFFFFF",
 
             title = "",
-            navigationBarColor = "#716e7d",
+            navigationBarColor = "#FFFFFF",
 
-            isNavigationBarVisible = true,
+            isNavigationBarVisible = false,
             isBackButtonVisible = false,
             isForwardButtonVisible = false,
             supportMultipleWindows = true,
@@ -151,11 +146,11 @@ public class WebViewManager : MonoBehaviour
             position = GetConfigurationPosition(),
             size = GetConfigurationSize(),
             // margins = GetConfigurationMargins(),
-            contentMode= GpmWebViewContentMode.MOBILE
+
 #if UNITY_IOS
-            contentMode = GpmWebViewContentMode.MOBILE,
+            contentMode = GpmWebViewContentMode.RECOMMENDED,
             isMaskViewVisible = true,
-            isAutoRotation = false
+            isAutoRotation = true
 #endif
         };
     }

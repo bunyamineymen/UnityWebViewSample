@@ -126,9 +126,12 @@ namespace Ratic_Kit.Scripts
 
             //webViewObject.SetScrollbarsVisibility(true);
 
-            webViewObject.SetMargins(0, (int)(Screen.height * 0.1f), 0, 0);
+            //webViewObject.SetMargins(0, (int)(Screen.height * 0.1f), 0, 0);
+            webViewObject.SetMargins(0, 0, 0, 0);
             webViewObject.SetTextZoom(100);  // android only. cf. https://stackoverflow.com/questions/21647641/android-webview-set-font-size-system-default/47017410#47017410
             webViewObject.SetVisibility(true);
+
+            webViewObject.
 
 #if !UNITY_WEBPLAYER && !UNITY_WEBGL
             if (Url.StartsWith("http"))

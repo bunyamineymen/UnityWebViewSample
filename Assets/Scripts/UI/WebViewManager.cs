@@ -160,15 +160,15 @@ public class WebViewManager : MonoBehaviour
 
         return new GpmWebViewRequest.Configuration()
         {
-            style = GpmWebViewStyle.FULLSCREEN,
+            style = GpmWebViewStyle.POPUP,
             isClearCache = true,
             isClearCookie = true,
             backgroundColor = "#FF2B85",
             title = "     ",
-            navigationBarColor = "#434548",
+            navigationBarColor = "#FF2B85",
             isNavigationBarVisible = true,
-            isBackButtonVisible = false,
-            isForwardButtonVisible = false,
+            isBackButtonVisible = true,
+            isForwardButtonVisible = true,
             supportMultipleWindows = true,
 
             //addJavascript
@@ -180,7 +180,7 @@ public class WebViewManager : MonoBehaviour
 
 #if UNITY_IOS
             contentMode = GpmWebViewContentMode.MOBILE,
-            isMaskViewVisible = true,
+            isMaskViewVisible = false,
             isAutoRotation = true
 #endif
         };
@@ -195,8 +195,8 @@ public class WebViewManager : MonoBehaviour
         return new GpmWebViewRequest.Position
         {
             hasValue = true,
-            x = (int)(Screen.height * 0.1f) - 1000,
-            y = (int)(Screen.height * 0.1f) - 1000
+            x = 0,
+            y = 0
         };
     }
 
@@ -206,7 +206,7 @@ public class WebViewManager : MonoBehaviour
         {
             hasValue = true,
             //width = (int)(Screen.height * 0.8f),
-            width = (int)(Screen.height * 1.5f),
+            width = (int)(Screen.height * 1f),
             //height = (int)(Screen.height * 0.8f)
             height = (int)(Screen.height * 1f)
         };
@@ -217,10 +217,10 @@ public class WebViewManager : MonoBehaviour
         return new GpmWebViewRequest.Margins
         {
             hasValue = true,
-            left = 0,
+            left = (int)(Screen.width*0.03f),
             //top = (int)(Screen.height * 0.15f),
-            top = -200,
-            right = 0,
+            top = (int)(Screen.height*0.05f),
+            right = (int)(Screen.width*0.03f),
             bottom = 0
         };
     }

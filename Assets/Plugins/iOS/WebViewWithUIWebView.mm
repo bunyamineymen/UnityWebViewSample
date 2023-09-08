@@ -63,7 +63,7 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 @property (nonatomic) CGRect frame;
 @property (nonatomic, readonly, strong) UIScrollView *scrollView;
-@property (nullable, nonatomic, assign) id <WKWebViewDelegate> delegate;
+@property (nullable, nonatomic, assign) id <UIWebViewDelegate> delegate;
 @property (nullable, nonatomic, weak) id <WKNavigationDelegate> navigationDelegate;
 @property (nullable, nonatomic, weak) id <WKUIDelegate> UIDelegate;
 @property (nullable, nonatomic, readonly, copy) NSURL *URL;
@@ -129,10 +129,10 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 @end
 
-@interface WKWebView(WebViewProtocolConformed) <WebViewProtocol>
+@interface UIWebView(WebViewProtocolConformed) <WebViewProtocol>
 @end
 
-@implementation WKWebView(WebViewProtocolConformed)
+@implementation UIWebView(WebViewProtocolConformed)
 
 @dynamic navigationDelegate;
 @dynamic UIDelegate;
@@ -144,13 +144,13 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 - (void)load:(NSURLRequest *)request
 {
-    WKWebView *webView = (WKWebView *)self;
+    UIWebView *webView = (UIWebView *)self;
     [webView loadRequest:request];
 }
 
 - (void)loadHTML:(NSString *)html baseURL:(NSURL *)baseUrl
 {
-    WKWebView *webView = (WKWebView *)self;
+    UIWebView *webView = (UIWebView *)self;
     [webView loadHTMLString:html baseURL:baseUrl];
 }
 
@@ -164,20 +164,20 @@ extern "C" void UnitySendMessage(const char *, const char *, const char *);
 
 - (void)setScrollbarsVisibility:(BOOL)visibility
 {
-    WKWebView *webView = (WKWebView *)self;
+    UIWebView *webView = (UIWebView *)self;
     webView.scrollView.showsHorizontalScrollIndicator = visibility;
     webView.scrollView.showsVerticalScrollIndicator = visibility;
 }
 
 - (void)setScrollBounce:(BOOL)enable
 {
-    WKWebView *webView = (WKWebView *)self;
+    UIWebView *webView = (UIWebView *)self;
     webView.scrollView.bounces = enable;
 }
 
 @end
 
-@interface CWebViewPlugin : NSObject<WKWebViewDelegate, WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
+@interface CWebViewPlugin : NSObject<UIWebViewDelegate, WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
 {
     UIView <WebViewProtocol> *webView;
     NSString *gameObjectName;
@@ -275,6 +275,12 @@ window.Unity = { \
         }
 #endif
         WKWebView *wkwebView = [[WKWebView alloc] initWithFrame:view.frame configuration:configuration];
+#if UNITYWEBVIEW_DEVELOPMENT
+        NSOperatingSystemVersion version = { 16, 4, 0 };
+        if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:version]) {
+            wkwebView.inspectable = true;
+        }
+#endif
         wkwebView.allowsLinkPreview = allowsLinkPreview;
         wkwebView.allowsBackForwardNavigationGestures = allowsBackForwardNavigationGestures;
         webView = wkwebView;
@@ -295,7 +301,7 @@ window.Unity = { \
             [[NSUserDefaults standardUserDefaults]
                 registerDefaults:@{ @"UserAgent": [[NSString alloc] initWithUTF8String:ua] }];
         }
-        WKWebView *uiwebview = [[WKWebView alloc] initWithFrame:view.frame];
+        UIWebView *uiwebview = [[UIWebView alloc] initWithFrame:view.frame];
         uiwebview.allowsInlineMediaPlayback = YES;
         uiwebview.mediaPlaybackRequiresUserAction = NO;
         webView = uiwebview;
@@ -550,7 +556,7 @@ window.Unity = { \
     UnitySendMessage([gameObjectName UTF8String], "CallOnError", "webViewWebContentProcessDidTerminate");
 }
 
-- (void)webView:(WKWebView *)uiWebView didFailLoadWithError:(NSError *)error
+- (void)webView:(UIWebView *)uiWebView didFailLoadWithError:(NSError *)error
 {
     UnitySendMessage([gameObjectName UTF8String], "CallOnError", [[error description] UTF8String]);
 }
@@ -565,7 +571,7 @@ window.Unity = { \
     UnitySendMessage([gameObjectName UTF8String], "CallOnError", [[error description] UTF8String]);
 }
 
-- (void)webViewDidFinishLoad:(WKWebView *)uiWebView {
+- (void)webViewDidFinishLoad:(UIWebView *)uiWebView {
     if (webView == nil)
         return;
     // cf. http://stackoverflow.com/questions/10996028/uiwebview-when-did-a-page-really-finish-loading/15916853#15916853
@@ -578,7 +584,7 @@ window.Unity = { \
     }
 }
 
-- (BOOL)webView:(WKWebView *)uiWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(WKWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)uiWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     if (webView == nil)
         return YES;
@@ -1053,6 +1059,7 @@ extern "C" {
     const char *_CWebViewPlugin_GetCustomHeaderValue(void *instance, const char *headerKey);
     void _CWebViewPlugin_SetBasicAuthInfo(void *instance, const char *userName, const char *password);
     void _CWebViewPlugin_ClearCache(void *instance, BOOL includeDiskFiles);
+    void _CWebViewPlugin_SetSuspended(void *instance, BOOL suspended);
 }
 
 void *_CWebViewPlugin_Init(const char *gameObjectName, BOOL transparent, BOOL zoom, const char *ua, BOOL enableWKWebView, int contentMode, BOOL allowsLinkPreview, BOOL allowsBackForwardNavigationGestures, int radius)
@@ -1274,4 +1281,8 @@ void _CWebViewPlugin_ClearCache(void *instance, BOOL includeDiskFiles)
     // no op
 }
 
+void _CWebViewPlugin_SetSuspended(void *instance, BOOL suspended)
+{
+    // no op
+}
 #endif // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0

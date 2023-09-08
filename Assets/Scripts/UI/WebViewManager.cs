@@ -2,13 +2,37 @@
 using System.Collections.Generic;
 using Ratic_Kit.Scripts;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class WebViewManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject _closeGO;
     [SerializeField] private WebViewHandler _webViewHandler;
+
+    public Color badkgroundColorYemek;
+    public Color badkgroundColorDefault;
+
+    public Image ImgBackground;
+
+    public GameObject InitScreen;
+    public GameObject TournamentScreen;
+
+    #region UI
+
+    public void GoToTournament()
+    {
+        InitScreen.SetActive(false);
+        TournamentScreen.SetActive(true);
+    }
+
+    public void BackButton()
+    {
+        InitScreen.SetActive(true);
+        TournamentScreen.SetActive(false);
+    }
+
+    #endregion
 
     #region Monobehaviours
 
@@ -38,8 +62,10 @@ public class WebViewManager : MonoBehaviour
 
 
     public void OpenWebViewViaUrlYemeksepeti()
-    { 
-        _webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
+    {
+        //_webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
+        GpmWebView.ShowUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io", GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
+
     }
 
     public void OpenWebView(string url)
@@ -63,12 +89,21 @@ public class WebViewManager : MonoBehaviour
         switch (callbackType)
         {
             case GpmWebViewCallback.CallbackType.Open:
+
+                ImgBackground.color = badkgroundColorYemek;
+
                 if (error != null)
                 {
                     Debug.LogFormat("Fail to open WebView. Error:{0}", error);
+
+                    ImgBackground.color = badkgroundColorYemek;
+
                 }
                 break;
             case GpmWebViewCallback.CallbackType.Close:
+
+                ImgBackground.color = badkgroundColorDefault;
+
                 if (error != null)
                 {
                     Debug.LogFormat("Fail to close WebView. Error:{0}", error);
@@ -127,28 +162,26 @@ public class WebViewManager : MonoBehaviour
 
         return new GpmWebViewRequest.Configuration()
         {
-            style = GpmWebViewStyle.POPUP,
+            style = GpmWebViewStyle.FULLSCREEN,
             isClearCache = true,
             isClearCookie = true,
-            backgroundColor = "#FFFFFF",
-
-            title = "",
-            navigationBarColor = "#FFFFFF",
-
-            isNavigationBarVisible = false,
+            backgroundColor = "#FF2B85",
+            title = "     ",
+            navigationBarColor = "#EB4384",
+            isNavigationBarVisible = true,
             isBackButtonVisible = false,
             isForwardButtonVisible = false,
             supportMultipleWindows = true,
 
-
+            //addJavascript
             customSchemePostCommand = customSchemePostCommand,
 
             position = GetConfigurationPosition(),
             size = GetConfigurationSize(),
-            // margins = GetConfigurationMargins(),
+            margins = GetConfigurationMargins(),
 
 #if UNITY_IOS
-            contentMode = GpmWebViewContentMode.RECOMMENDED,
+            contentMode = GpmWebViewContentMode.MOBILE,
             isMaskViewVisible = true,
             isAutoRotation = true
 #endif
@@ -164,8 +197,8 @@ public class WebViewManager : MonoBehaviour
         return new GpmWebViewRequest.Position
         {
             hasValue = true,
-            x = (int)(Screen.height * 0.1f),
-            y = (int)(Screen.height * 0.1f)
+            x = (int)(Screen.height * 0.1f) - 1000,
+            y = (int)(Screen.height * 0.1f) - 1000
         };
     }
 
@@ -174,8 +207,10 @@ public class WebViewManager : MonoBehaviour
         return new GpmWebViewRequest.Size
         {
             hasValue = true,
-            width = (int)(Screen.height * 0.8f),
-            height = (int)(Screen.height * 0.8f)
+            //width = (int)(Screen.height * 0.8f),
+            width = (int)(Screen.height * 1.5f),
+            //height = (int)(Screen.height * 0.8f)
+            height = (int)(Screen.height * 1f)
         };
     }
 
@@ -185,12 +220,12 @@ public class WebViewManager : MonoBehaviour
         {
             hasValue = true,
             left = 0,
-            top = (int)(Screen.height * 0.15f),
+            //top = (int)(Screen.height * 0.15f),
+            top = -200,
             right = 0,
             bottom = 0
         };
     }
-
 
     #endregion
 

@@ -18,6 +18,10 @@ public class WebViewManager : MonoBehaviour
     public GameObject InitScreen;
     public GameObject TournamentScreen;
 
+    public GameObject ButtonBackView;
+
+
+
     #region UI
 
     public void GoToTournament()
@@ -63,8 +67,10 @@ public class WebViewManager : MonoBehaviour
 
     public void OpenWebViewViaUrlYemeksepeti()
     {
-        //_webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
-        GpmWebView.ShowUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io", GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
+        _webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
+        //GpmWebView.ShowUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io", GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
+
+        ButtonBackView.SetActive(true);
 
     }
 
@@ -90,7 +96,9 @@ public class WebViewManager : MonoBehaviour
         {
             case GpmWebViewCallback.CallbackType.Open:
 
-                ImgBackground.color = badkgroundColorYemek;
+                //ImgBackground.color = badkgroundColorYemek;
+
+                //ButtonBackView.SetActive(true);
 
                 if (error != null)
                 {
@@ -100,7 +108,9 @@ public class WebViewManager : MonoBehaviour
                 break;
             case GpmWebViewCallback.CallbackType.Close:
 
-                ImgBackground.color = badkgroundColorDefault;
+                //ButtonBackView.SetActive(false);
+
+                //ImgBackground.color = badkgroundColorDefault;
 
                 if (error != null)
                 {
@@ -144,10 +154,12 @@ public class WebViewManager : MonoBehaviour
 
     public void Close()
     {
+        Debug.Log("Close bny");
+
         if (_webViewHandler.webViewObject != null)
         {
+            ButtonBackView.SetActive(false);
             _closeGO.SetActive(false);
-            // GpmWebView.Close();
             Destroy(_webViewHandler.webViewObject.gameObject);
         }
     }

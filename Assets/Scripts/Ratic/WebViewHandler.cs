@@ -1,4 +1,5 @@
 using System.Collections;
+
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -91,19 +92,19 @@ namespace Ratic_Kit.Scripts
 #endif
                     webViewObject.EvaluateJS(js + @"Unity.call('ua=' + navigator.userAgent)");
                 },
-                wkAllowsBackForwardNavigationGestures:false
-                //transparent: false,
-                //zoom: true,
-                //ua: "custom user agent string",
-                //radius: 0,  // rounded corner radius in pixel
-                //// android
-                //androidForceDarkMode: 0,  // 0: follow system setting, 1: force dark off, 2: force dark on
-                //// ios
-                //enableWKWebView: true,
-                //wkContentMode: 0,  // 0: recommended, 1: mobile, 2: desktop
-                //wkAllowsLinkPreview: true,
-                //// editor
-                //separated: false
+                wkAllowsBackForwardNavigationGestures: false
+            //transparent: false,
+            //zoom: true,
+            //ua: "custom user agent string",
+            //radius: 0,  // rounded corner radius in pixel
+            //// android
+            //androidForceDarkMode: 0,  // 0: follow system setting, 1: force dark off, 2: force dark on
+            //// ios
+            //enableWKWebView: true,
+            //wkContentMode: 0,  // 0: recommended, 1: mobile, 2: desktop
+            //wkAllowsLinkPreview: true,
+            //// editor
+            //separated: false
             );
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
         webViewObject.bitmapRefreshCycle = 1;
@@ -125,15 +126,9 @@ namespace Ratic_Kit.Scripts
             //webViewObject.SetBasicAuthInfo("id", "password");
 
             //webViewObject.SetScrollbarsVisibility(true);
-
-
-
-            //webViewObject.SetMargins(0, (int)(Screen.height * 0.1f), 0, 0);
-
-            webViewObject.SetMargins(0, 0, 0, 0);
+            webViewObject.SetMargins(0, (int)(Screen.height * 0.1f), 0, 0);
             webViewObject.SetTextZoom(100);  // android only. cf. https://stackoverflow.com/questions/21647641/android-webview-set-font-size-system-default/47017410#47017410
             webViewObject.SetVisibility(true);
-
 
 #if !UNITY_WEBPLAYER && !UNITY_WEBGL
             if (Url.StartsWith("http"))
@@ -188,75 +183,72 @@ namespace Ratic_Kit.Scripts
             yield break;
         }
 
-        //void OnGUI()
-        //{
-        //    var x = 10;
+        /*void OnGUI()
+    {
+        var x = 10;
 
-        //    GUI.enabled = (webViewObject == null) ? false : webViewObject.CanGoBack();
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "<"))
-        //    {
-        //        webViewObject?.GoBack();
-        //    }
-        //    GUI.enabled = true;
-        //    x += 90;
+        GUI.enabled = (webViewObject == null) ? false : webViewObject.CanGoBack();
+        if (GUI.Button(new Rect(x, 10, 80, 80), "<"))
+        {
+            webViewObject?.GoBack();
+        }
+        GUI.enabled = true;
+        x += 90;
 
-        //    GUI.enabled = (webViewObject == null) ? false : webViewObject.CanGoForward();
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), ">"))
-        //    {
-        //        webViewObject?.GoForward();
-        //    }
-        //    GUI.enabled = true;
-        //    x += 90;
+        GUI.enabled = (webViewObject == null) ? false : webViewObject.CanGoForward();
+        if (GUI.Button(new Rect(x, 10, 80, 80), ">"))
+        {
+            webViewObject?.GoForward();
+        }
+        GUI.enabled = true;
+        x += 90;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "r"))
-        //    {
-        //        webViewObject?.Reload();
-        //    }
-        //    x += 90;
+        if (GUI.Button(new Rect(x, 10, 80, 80), "r"))
+        {
+            webViewObject?.Reload();
+        }
+        x += 90;
 
-        //    GUI.TextField(new Rect(x, 10, 180, 80), "" + ((webViewObject == null) ? 0 : webViewObject.Progress()));
-        //    x += 190;
+        GUI.TextField(new Rect(x, 10, 180, 80), "" + ((webViewObject == null) ? 0 : webViewObject.Progress()));
+        x += 190;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "*"))
-        //    {
-        //        var g = GameObject.Find("WebViewObject");
-        //        if (g != null)
-        //        {
-        //            Destroy(g);
-        //        }
-        //        else
-        //        {
-        //            StartCoroutine(StartWebView(tokenURL));
-        //        }
-        //    }
-        //    x += 90;
+        if (GUI.Button(new Rect(x, 10, 80, 80), "*"))
+        {
+            var g = GameObject.Find("WebViewObject");
+            if (g != null)
+            {
+                Destroy(g);
+            }
+            else
+            {
+                StartCoroutine(StartWebView(tokenURL));
+            }
+        }
+        x += 90;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "c"))
-        //    {
-        //        webViewObject?.GetCookies(tokenURL);
-        //    }
-        //    x += 90;
+        if (GUI.Button(new Rect(x, 10, 80, 80), "c"))
+        {
+            webViewObject?.GetCookies(tokenURL);
+        }
+        x += 90;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "x"))
-        //    {
-        //        webViewObject?.ClearCookies();
-        //    }
-        //    x += 90;
+        if (GUI.Button(new Rect(x, 10, 80, 80), "x"))
+        {
+            webViewObject?.ClearCookies();
+        }
+        x += 90;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "D"))
-        //    {
-        //        webViewObject?.SetInteractionEnabled(false);
-        //    }
-        //    x += 90;
+        if (GUI.Button(new Rect(x, 10, 80, 80), "D"))
+        {
+            webViewObject?.SetInteractionEnabled(false);
+        }
+        x += 90;
 
-        //    if (GUI.Button(new Rect(x, 10, 80, 80), "E"))
-        //    {
-        //        webViewObject?.SetInteractionEnabled(true);
-        //    }
-        //    x += 90;
-        //}
-
-
-
+        if (GUI.Button(new Rect(x, 10, 80, 80), "E"))
+        {
+            webViewObject?.SetInteractionEnabled(true);
+        }
+        x += 90;
+    }*/
     }
 }

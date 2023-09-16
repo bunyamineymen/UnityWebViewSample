@@ -67,7 +67,8 @@ public class WebViewManager : MonoBehaviour
 
     public void OpenWebViewViaUrlYemeksepeti()
     {
-        _webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
+        //_webViewHandler.OpenWebViewViaUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io");
+        _webViewHandler.OpenWebViewViaUrl("https://ratic.co/turkcell/?username=salvador&email=ali@ratic.io");
         //GpmWebView.ShowUrl("https://ratic.co/yemeksepeti/?username=salvador&email=ali@ratic.io", GetConfiguration(), OnWebViewCallback, new List<string> { "test-scheme" });
 
         ButtonBackView.SetActive(true);
